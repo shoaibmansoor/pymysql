@@ -5,6 +5,7 @@ from datetime import datetime
 import mysql.connector
 import pymysql
 
+username = os.environ.get('DB_USERNAME')
 password = os.environ.get('DB_PASSWORD')
 CREATE_RECORD = "INSERT INTO actor(first_name, last_name, last_update) VALUES(%s, %s, %s)"
 DELETE_RECORD = "DELETE FROM actor WHERE actor_id=%s"
@@ -13,7 +14,7 @@ UPDATE_RECORD = "UPDATE actor SET first_name=%s, last_name=%s WHERE actor_id=%s"
 
 def read(id):
     try:
-        cnx = mysql.connector.connect(user='shoaib', password=password,
+        cnx = mysql.connector.connect(user=username, password=password,
                                       host='127.0.0.1',
                                       database='sakila')
         cur = cnx.cursor(pymysql.cursors.DictCursor)
@@ -30,7 +31,7 @@ def read(id):
 
 def create():
     try:
-        cnx = mysql.connector.connect(user='shoaib', password=password,
+        cnx = mysql.connector.connect(user=username, password=password,
                                       host='127.0.0.1',
                                       database='sakila')
         cur = cnx.cursor(pymysql.cursors.DictCursor)
@@ -55,7 +56,7 @@ def create():
 
 def update(id):
     try:
-        cnx = mysql.connector.connect(user='shoaib', password=password,
+        cnx = mysql.connector.connect(user=username, password=password,
                                       host='127.0.0.1',
                                       database='sakila')
         cur = cnx.cursor(pymysql.cursors.DictCursor)
@@ -76,7 +77,7 @@ def update(id):
 
 def delete(id):
     try:
-        cnx = mysql.connector.connect(user='shoaib', password=password,
+        cnx = mysql.connector.connect(user=username, password=password,
                                       host='127.0.0.1',
                                       database='sakila')
         cur = cnx.cursor(pymysql.cursors.DictCursor)
