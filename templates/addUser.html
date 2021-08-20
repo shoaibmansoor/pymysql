@@ -16,7 +16,7 @@ input[type=text], select, textarea {
    margin-bottom: 16px;
    resize: vertical;
 }
-input[type=submit] {
+input[id=submit] {
    background-color: #4CAF50;
    color: white;
    padding: 12px 20px;
@@ -28,31 +28,34 @@ input[type=submit]:hover {
     background-color: #45a049;
 }
 .container {
-        border-radius: 5px;
-        background-color: #f2f2f2;
-        padding: 20px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
 }
+
 
     </style>
 
     <script type=text/javascript>
 $(document).ready(function () {
-    $(document).on('click', '#submit', function(){
+    $('#submit').click(function() {
         const first_name = $('#fname').val();
         const last_name = $('#lname').val()
         const data = {first_name: first_name, last_name: last_name};
-        const res = $.ajax({
+        return $.ajax({
             type: 'POST',
-            contentType: "application/json; charset=utf-8",
-            traditional: true,
             async: false,
             data: JSON.stringify(data),
             url: "http://localhost:5000/api/User",
             success: function(data) {
-                console.log(data);
+                $('#message').text('User created successfully!!!');
+                $('#json').text(JSON.stringify(data));
+            },
+            error: function (data) {
+                $('#message').text('Error while creating user!!!');
+                $('#json').text(JSON.stringify(data));
             }
         });
-        document.getElementById("json").textContent = JSON.stringify(res.responseText, undefined, 2);
     });
 });
 
@@ -66,10 +69,11 @@ $(document).ready(function () {
         <input type="text" id="fname" name="firstname" placeholder="First Name..">
         <label for="lname">LastName</label>
         <input type="text" id="lname" name="lastname" placeholder="Last Name..">
-        <input id="submit" type="submit" value="Submit">
+        <input id="submit" type="button" value="Submit">
     </form>
 </div>
 <div>
+    <strong id="message"></strong>
     <pre id="json"></pre>
 </div>
 

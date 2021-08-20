@@ -1,81 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-body {font-family: Arial, Helvetica, sans-serif;}
-* {box-sizing: border-box;}
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script type=text/javascript>
+    $(document).ready(function () {
+        $(document).on('click', '#submit', function () {
+            const age = $('#age').val();
+            const address = $('#address').val();
+            const country = $('#country').val();
+            const data = JSON.stringify({age: age, address: address, country_origin: country});
 
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-  resize: vertical;
-}
-
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type=submit]:hover {
-  background-color: #45a049;
-}
-
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
-
-    </style>
+            return $.ajax({
+                type: 'POST',
+                async: false,
+                data: data,
+                url: "http://localhost:5000/api/Details",
+                success: function(data) {
+                    $('#message').text('User details created successfully!!!');
+                    $('#json').text(JSON.stringify(data));
+                },
+                error: function (data) {
+                    $('#message').text('Error while creating user details!!!');
+                    $('#json').text(JSON.stringify(data));
+                }
+            });
+        });
+    });
+    </script>
 </head>
 <body>
 
 <h3>Details Form</h3>
-
-<div class="container">
-    <form action="/action_page.php">
+<form>
+    <div class="form-group">
         <label for="age">Age</label>
-        <input type="text" id="age" name="age" placeholder="User's Age..">
-
+        <input type="text" class="form-control" id="age" aria-describedby="agelHelp"
+               placeholder="Enter Age">
+        <small id="agelHelp" class="form-text text-muted">Enter your age please</small>
+    </div>
+    <div class="form-group">
         <label for="address">Address</label>
-        <input type="text" id="address" name="address" placeholder="User's Address..">
-
-        <label for="country">Country Origin</label>
-        <input type="text" id="country" name="country" placeholder="User's country..">
-
-        <input type="submit" value="Submit">
-    </form>
+        <input type="text" class="form-control" id="address" placeholder="User's Address..">
+    </div>
+    <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" class="form-control" id="country" placeholder="User's country..">
+    </div>
+    <button type="button" id="submit" class="btn btn-primary">Submit</button>
+</form>
+<br/>
+<br/>
+<div>
+    <strong id="message"></strong>
+    <pre id="json"></pre>
 </div>
-
-<script type=text/javascript>
-    $(document).ready(function () {
-        var age = $('#age').val();
-        var address = $('#address').val();
-        var country = $('#country').val();
-
-        $("#submit").click(function () {
-            $.ajax({
-                type: 'POST',
-                data: {age: age, address: address, country_origin: country},
-                url: "http://0.0.0.0:5000/api/Details",
-                success: added,
-                error: showError
-            });
-        });
-    });
-
-</script>
 
 </body>
 </html>
